@@ -4,15 +4,13 @@ const uri = "mongodb+srv://elias:elias@cluster0.7acgvi4.mongodb.net/?retryWrites
 
 let cachedDb;
 
-const connectToDatabase = async () => {
+async function connectToDatabase() {
   if (cachedDb) {
     return cachedDb
   }
-
   const client = await MongoClient.connect(uri)
   const db = client.db("test")
-
-  cachedDb = db 
+  cachedDb = db
   return db
 }
 
@@ -25,5 +23,5 @@ export default async function handler(req, res) {
   const list = await collection.find().toArray()
   console.log(list);
   
-  res.status(200).json(list)
+  return res.status(200).json(list)
 }
