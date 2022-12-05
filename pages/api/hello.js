@@ -2,17 +2,28 @@ const { MongoClient } = require("mongodb")
 
 const uri = "mongodb+srv://elias:elias@cluster0.7acgvi4.mongodb.net/?retryWrites=true&w=majority"
 
-const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+let cachedDb;
+
+const connectToDatabase = async () => {
+  if (cachedDb) {
+    return cachedDb
+  }
+
+  const client = await MongoClient.connect(uri)
+  const db = client.db("test")
+
+  cachedDb = db 
+  return db
+}
 
 
 export default async function handler(req, res) {
 
-  const db = await client.db("test")
+  const db = await connectToDatabase()
   const collection = await db.collection("devices")
 
-  await collection.insertOne({ nome: "Elias" })
-  await collection.insertOne({ nome: "Elias2" })
+  const list = await collection.find().toArray()
+  console.log(list);
   
-  client.close()
-  res.status(200).json({ name: 'John Doe' })
+  res.status(200).json(list)
 }
