@@ -8,12 +8,11 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 export default async function handler(req, res) {
 
   const db = await client.db("test")
-  const collection = db.collection("devices")
+  const collection = await db.collection("devices")
 
-  collection.insertOne({ nome: "Elias" })
-  collection.insertOne({ nome: "Elias2" })
+  await collection.insertOne({ nome: "Elias" })
+  await collection.insertOne({ nome: "Elias2" })
   
   client.close()
-  collection.insertOne({ nome: "Elias3" })
   res.status(200).json({ name: 'John Doe' })
 }
