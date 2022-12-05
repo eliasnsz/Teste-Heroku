@@ -20,8 +20,10 @@ export default async function handler(req, res) {
   const db = await connectToDatabase()
   const collection = await db.collection("devices")
 
-  const list = await collection.find().toArray()
-  console.log(list);
+  if (req.method === "GET") {
+    const list = await collection.find().toArray()
+    console.log(list);
+    return res.status(200).json(list)
+  }
   
-  return res.status(200).json(list)
 }
