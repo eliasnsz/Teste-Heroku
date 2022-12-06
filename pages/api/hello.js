@@ -21,7 +21,6 @@ export default async function handler(req, res) {
   const collection = await db.collection("devices")
 
   const list = await collection.find().toArray()
-  console.log(list);
   
   return res.status(200).json(list)
 }
