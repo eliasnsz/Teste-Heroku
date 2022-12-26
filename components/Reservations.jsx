@@ -1,10 +1,21 @@
+import { 
+  Box,
+  Button, 
+  Flex,
+  Input, 
+  InputGroup, 
+  InputRightAddon, 
+  SimpleGrid, 
+  Stack, 
+} from "@chakra-ui/react";
+import { useState } from "react"
 import { SearchIcon } from "@chakra-ui/icons";
-import { Button, Divider, Flex, FormLabel, Heading, Input, InputGroup, InputRightAddon, Spinner, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import { useQuery, useQueryClient } from "react-query";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { baseUrl } from "../pages/_app";
+import axios from "axios";
+
 import IndividualReservation from "./IndividualReservation";
+import Stats from "./Stats";
 
 export default function Reservations () {
 
@@ -12,6 +23,7 @@ export default function Reservations () {
   const now = new Date().toISOString().split("T")[0]
 
   const [ date, setDate ] = useState(now)
+  const [ searchInputValue, setSearchInputValue ] = useState("")
 
   const { data: reservations, isLoading } = useQuery("reservations", async () => {
     const response = await axios.get(`${baseUrl}/api/reservas/${date}`)
@@ -20,6 +32,11 @@ export default function Reservations () {
     refetchInterval: 1000 * 60, // 60 segundos
     refetchOnWindowFocus: false
   })
+
+
+  const filteredRes = searchInputValue.length ?
+    reservations.filter(res => res.name.toLowerCase().includes(searchInputValue.toLowerCase())) 
+    : []
 
   const handleDateChange = () => {
     queryClient.fetchQuery("reservations")
@@ -42,10 +59,14 @@ export default function Reservations () {
         >Buscar</Button>
       </Stack>
       
+      <Stats reservations={reservations}/>
+
       <InputGroup>
         <Input
           type="text"
           placeholder="Pesquise as reservas pelo nome"
+          value={searchInputValue}
+          onChange={e => setSearchInputValue(e.target.value)}
         >
         </Input>
         <InputRightAddon>
@@ -54,24 +75,22 @@ export default function Reservations () {
       </InputGroup>
     </Flex>
 
-    <TableContainer>
-      <Table size={["sm","md","md"]} variant={["striped", "simple", "simple"]} mt={8} colorScheme='teal'>
-        <Thead>
-          <Tr>
-            <Th>Mesa</Th>
-            <Th>Nome</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          { !isLoading && 
-          reservations.map(res => {
-            return (
-              <IndividualReservation key={res._id} isLoading={isLoading} reservation={res}/>
-            )})
-          }
-        </Tbody>
-      </Table>
-    </TableContainer>
+    <Box height="45vh" overflowY="scroll" mt={4}>
+      <SimpleGrid mt={4} spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
+        { !isLoading && !searchInputValue ?
+        reservations.map(res => {
+          return (
+            <IndividualReservation key={res._id} isLoading={isLoading} reservation={res}/>
+          )})
+        : !isLoading && filteredRes.map( res => {
+          return (
+            <IndividualReservation key={res._id} isLoading={isLoading} reservation={res}/>
+          )
+        })
+        }
+      </SimpleGrid>
+    </Box>
+
   </>
   )
 }

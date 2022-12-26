@@ -1,4 +1,17 @@
-import { Alert, AlertDescription, AlertIcon, AlertTitle, Button, Container, Flex, FormLabel, Grid, Link, Stack, Text, Tooltip } from "@chakra-ui/react"
+import { 
+  Alert, 
+  AlertDescription, 
+  AlertIcon, 
+  Button, 
+  Container, 
+  Flex, 
+  FormLabel,
+  Grid, 
+  Link, 
+  Stack, 
+  Text, 
+  Tooltip 
+} from "@chakra-ui/react"
 import { useQueryClient } from "react-query"
 import axios from "axios"
 import { getSession } from "next-auth/react"
@@ -73,7 +86,7 @@ export default function Reservar({ sessionEmail, externalQuantity, internalQuant
     switch (local) {
       case "Interno":
         if (internalQuantity[date] !== undefined) {
-          if (internalQuantity[date] + total > internalMaxCapacity) {
+            if (internalQuantity[date] + total > internalMaxCapacity) {
             setInternalIsFull(true)
           } else {
             setInternalIsFull(false)
@@ -229,7 +242,7 @@ export default function Reservar({ sessionEmail, externalQuantity, internalQuant
               alignSelf="center"
               type="submit"
               disabled={
-                isExistingDate || pastDate ||
+                isSending || isExistingDate || pastDate ||
                 (externalIsFull && local === "Varanda") ||
                 (internalIsFull && local === "Interno")
               }

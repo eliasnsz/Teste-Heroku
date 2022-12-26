@@ -57,7 +57,7 @@ export default function Reservas() {
   })
 
   const handleDelete = async (uuid) => {
-    const res = await axios.delete(`../api/reservas/${uuid}`)
+    const res = await axios.delete(`../api/reservas/delete/${uuid}`)
     window.location.href = "/reservas"
   }
 

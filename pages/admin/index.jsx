@@ -1,14 +1,21 @@
+import { 
+  Container, 
+  Tab, 
+  TabList, 
+  TabPanel, 
+  TabPanels, 
+  Tabs 
+} from "@chakra-ui/react"
 import { EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons"
-import { Container, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react"
 import { getSession } from "next-auth/react"
 import { useQueryClient } from "react-query"
 import Reservations from "../../components/Reservations"
 import { adminEmails } from "../_app"
+import CreateReservation from "../../components/CreateReservation"
 
 
 export default function Admin({ email }) {
   const queryClient = useQueryClient()
-  
   
   return (
     <>
@@ -40,6 +47,9 @@ export default function Admin({ email }) {
 
           <TabPanel >
             <Reservations />
+          </TabPanel>
+          <TabPanel >
+            <CreateReservation />
           </TabPanel>
 
         </TabPanels>
