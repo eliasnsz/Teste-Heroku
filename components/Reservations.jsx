@@ -75,16 +75,27 @@ export default function Reservations () {
       </InputGroup>
     </Flex>
 
-    <Box height="45vh" overflowY="scroll" mt={4}>
-      <SimpleGrid mt={4} spacing={4} templateColumns='repeat(auto-fill, minmax(200px, 1fr))'>
+    <Box 
+      height="45vh" 
+      overflowY="scroll" 
+      border="1px solid #00000019" 
+      mt={4}
+      px={3}
+      borderRadius="md"
+    >
+      <SimpleGrid 
+        mt={4} 
+        spacing={4} 
+        templateColumns='repeat(auto-fill, minmax(200px, 1fr))'
+      >
         { !isLoading && !searchInputValue ?
         reservations.map(res => {
           return (
-            <IndividualReservation key={res._id} isLoading={isLoading} reservation={res}/>
+            <IndividualReservation reservations={reservations} key={res._id} isLoading={isLoading} reservation={res}/>
           )})
         : !isLoading && filteredRes.map( res => {
           return (
-            <IndividualReservation key={res._id} isLoading={isLoading} reservation={res}/>
+            <IndividualReservation reservations={reservations} key={res._id} isLoading={isLoading} reservation={res}/>
           )
         })
         }

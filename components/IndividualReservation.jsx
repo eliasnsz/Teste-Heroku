@@ -1,3 +1,4 @@
+import { Icon, WarningIcon } from "@chakra-ui/icons"
 import { 
   useDisclosure, 
   Card,
@@ -5,11 +6,13 @@ import {
   Heading,
   CardBody,
   Text,
+  Stack,
 } from "@chakra-ui/react"
 import { useState } from "react"
 import InfoModal from "./InfoModal"
+import { MdError } from "react-icons/md"
 
-export default function IndividualReservation ({ reservation, isLoading }) {
+export default function IndividualReservation ({ reservations, reservation, isLoading }) {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -21,19 +24,28 @@ export default function IndividualReservation ({ reservation, isLoading }) {
 
   return (
     <>
-      <Card onClick={onOpen} _hover={{cursor: "pointer", bgColor: "#efeeffbb"}} size="sm" variant="outline">
+      <Card 
+          onClick={onOpen} 
+          _hover={{cursor: "pointer"}} 
+          size="sm" 
+          variant="outline"
+          boxShadow="md "
+        >
         <CardHeader>
           <Heading size='md'>{reservation.name}</Heading>
         </CardHeader>
         <CardBody fontWeight={500}>
-          <Text>Mesa: { reservation.mesa || "--" }</Text>
+          <Stack direction="row" align="center">
+            <Text>Mesa: { reservation.mesa || "--" }</Text>
+              {!reservation.mesa && <Icon boxSize="20px" color="#ff4043" as={MdError}/>}
+          </Stack>
           <Text>Reservas: {getResTotal()}</Text>
           <Text>Salão: {reservation.local}</Text>
           <Text>Obs: {reservation.obs  || "..." }</Text>
         </CardBody>
       </Card>
-       
       <InfoModal 
+        reservations={reservations}
         reservation={reservation} 
         isOpen={isOpen} 
         onClose={onClose}

@@ -19,14 +19,15 @@ import {
   NumberDecrementStepper, 
   NumberInput,
 } from "@chakra-ui/react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import InputNumber from './InputNumber'
 import InputLocal from './InputLocal'
 import InputObs from './InputObs'
 import axios from "axios"
 import { useQueryClient } from "react-query"
+import GlobalAlert from "./GlobalAlert"
 
-export default function InfoModal({ reservation, isOpen, onClose, isSending, setIsSending }) {
+export default function InfoModal({ reservations, reservation, isOpen, onClose, isSending, setIsSending }) {
 
   const queryClient = useQueryClient()
 
@@ -37,6 +38,8 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
   const [ teen, setTeen ] = useState(reservation.teen)
   const [ child, setChild ] = useState(reservation.child)
   const [ obs, setObs ] = useState(reservation.obs)
+
+  const [ isExistentTableNumber, setExistentTableNumber ] = useState(false)
 
   //Fechar modal e limpar inputs
   function handleClose() {
@@ -59,6 +62,7 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
     queryClient.invalidateQueries("reservations")
     onClose()
     setIsSending(false)
+    return
   }
 
   //Delete reservation
@@ -68,6 +72,18 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
     onClose()
   }
   
+  //Checar se existe um numero de mesa ja existente
+  useEffect(() => {
+    const allTableNumbers = (reservations.filter(res => res.mesa !== reservation.mesa && res.mesa.trim() !== "")).map(res => res.mesa)
+    if (allTableNumbers.includes(mesa)) {
+      setExistentTableNumber(true)
+      return
+    }
+    setExistentTableNumber(false)
+  }, [mesa])
+
+  const isButtonDisabled = isExistentTableNumber ? true : false
+
   return (
     <>
       <Modal
@@ -75,7 +91,7 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
         onClose={onClose}
         isCentered="true"
       >
-        <ModalOverlay />
+        <ModalOverlay/>
         <ModalContent>
           <ModalHeader>Editar reserva:</ModalHeader>
           <ModalCloseButton onClick={handleClose} />
@@ -86,9 +102,10 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
                 <InputGroup >
                   <InputLeftAddon bgColor="brown.300">Mesa: </InputLeftAddon>
                   <NumberInput
-                  w="100%"
-                  value={mesa}
-                  onChange={e => setMesa(e)}
+                    w="100%"
+                    value={mesa}
+                    onChange={e => setMesa(e)}
+                    min={1}
                   >
                     <NumberInputField borderLeftRadius="none"/>
                     <NumberInputStepper>
@@ -97,6 +114,10 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
                     </NumberInputStepper>
                   </NumberInput>
                 </InputGroup>
+                {
+                isExistentTableNumber 
+                  && <GlobalAlert>Já existe uma reserva nessa mesa</GlobalAlert>
+                } 
                 {/* Nome */}
                 <InputGroup>
                   <InputLeftAddon bgColor="brown.300">Nome: </InputLeftAddon>
@@ -112,6 +133,7 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
                       Adultos:
                       <InputNumber
                         value={adult}
+                        min={1}
                         onChange={e => setAdult(e)}
                         ></InputNumber>
                     </FormLabel>
@@ -121,6 +143,7 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
                       8 a 12:
                       <InputNumber
                         value={teen}
+                        min={0}
                         onChange={e => setTeen(e)}
                       ></InputNumber>
                     </FormLabel>
@@ -130,6 +153,7 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
                       5 a 7:
                       <InputNumber
                         value={child}
+                        min={0}
                         onChange={e => setChild(e)}
                       ></InputNumber>
                     </FormLabel>
@@ -163,6 +187,7 @@ export default function InfoModal({ reservation, isOpen, onClose, isSending, set
                 colorScheme='blue'
                 isLoading={isSending}
                 onClick={handleChanges}
+                isDisabled={isButtonDisabled}
               >
                 Salvar
               </Button>
