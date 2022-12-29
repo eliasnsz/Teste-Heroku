@@ -32,7 +32,7 @@ export default function Stats({ reservations }) {
           <StatLabel>
             Interno:
           </StatLabel>
-          <StatNumber>
+          <StatNumber fontSize={20}>
             {totalInternal}
           </StatNumber>
         </Stat>
@@ -40,7 +40,7 @@ export default function Stats({ reservations }) {
           <StatLabel>
             Externo:
           </StatLabel>
-          <StatNumber>
+          <StatNumber fontSize={20}>
             {totalExternal}
           </StatNumber>
         </Stat>
@@ -48,7 +48,7 @@ export default function Stats({ reservations }) {
           <StatLabel>
             Total:
           </StatLabel>
-          <StatNumber>
+          <StatNumber fontSize={20}>
             {totalInternal + totalExternal}
           </StatNumber>
         </Stat>

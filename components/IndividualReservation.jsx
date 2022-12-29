@@ -7,10 +7,15 @@ import {
   CardBody,
   Text,
   Stack,
+  Tag,
+  Divider,
+  Flex,
+  TagLabel,
 } from "@chakra-ui/react"
 import { useState } from "react"
 import InfoModal from "./InfoModal"
 import { MdError } from "react-icons/md"
+import moment from "moment/moment"
 
 export default function IndividualReservation ({ reservations, reservation, isLoading }) {
 
@@ -19,7 +24,18 @@ export default function IndividualReservation ({ reservations, reservation, isLo
   const [ isSending, setIsSending ] = useState(false)  
 
   const getResTotal = () => {
-    return Number(reservation.adult) + Number(reservation.teen) + Number(reservation.child) 
+    const total = Number(reservation.adult) + Number(reservation.teen) + Number(reservation.child) 
+    if (total > 1) {
+      return total + " pessoas"
+    }
+      return total + " pessoa"
+  }
+
+  const creationPastTimeInMinutes = (reservation) => {
+    const now = moment()
+    const createdAt = moment(reservation.createAt)
+    const pastTimeInMinutes = Math.round(now.diff(createdAt) / 1000 / 60)
+    return pastTimeInMinutes
   }
 
   return (
@@ -33,15 +49,32 @@ export default function IndividualReservation ({ reservations, reservation, isLo
         >
         <CardHeader>
           <Heading size='md'>{reservation.name}</Heading>
+          {creationPastTimeInMinutes(reservation) < 5 &&
+          <Tag mt={1} colorScheme="twitter" variant="solid">
+            <TagLabel>
+              Recente
+            </TagLabel>
+          </Tag>}
         </CardHeader>
-        <CardBody fontWeight={500}>
-          <Stack direction="row" align="center">
-            <Text>Mesa: { reservation.mesa || "--" }</Text>
-              {!reservation.mesa && <Icon boxSize="20px" color="#ff4043" as={MdError}/>}
-          </Stack>
-          <Text>Reservas: {getResTotal()}</Text>
-          <Text>Salão: {reservation.local}</Text>
-          <Text>Obs: {reservation.obs  || "..." }</Text>
+        <CardBody >
+          <Flex align="center">
+            <Heading fontSize="md" mr={1}>Mesa: </Heading>
+            <Text>{ reservation.mesa || 
+              <Icon boxSize="20px" color="#ff4043" as={MdError}/>}
+            </Text>
+          </Flex>
+          <Flex align="center">
+            <Heading fontSize="md" mr={1}>Reservas: </Heading>
+            <Text><em>{getResTotal()}</em></Text>
+          </Flex>
+          <Flex align="center">
+            <Heading fontSize="md" mr={1}>Salão: </Heading>
+            <Text><em>{reservation.local}</em></Text>
+          </Flex>
+          <Flex align="flex-start">
+            <Heading mt={"2px"} mr={1} fontSize="md">Obs: </Heading>
+            <Text><em>{reservation.obs  || "--" }</em></Text>
+          </Flex>
         </CardBody>
       </Card>
       <InfoModal 

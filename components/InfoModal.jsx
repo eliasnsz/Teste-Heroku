@@ -18,6 +18,7 @@ import {
   NumberIncrementStepper, 
   NumberDecrementStepper, 
   NumberInput,
+  Text,
 } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import InputNumber from './InputNumber'
@@ -26,6 +27,7 @@ import InputObs from './InputObs'
 import axios from "axios"
 import { useQueryClient } from "react-query"
 import GlobalAlert from "./GlobalAlert"
+import moment from "moment/moment"
 
 export default function InfoModal({ reservations, reservation, isOpen, onClose, isSending, setIsSending }) {
 
@@ -71,6 +73,13 @@ export default function InfoModal({ reservations, reservation, isOpen, onClose, 
     queryClient.invalidateQueries("reservations")
     onClose()
   }
+
+  const pastTimeSinceCreation = (reservation) => {
+    const now = moment()
+    const createdAt = moment(reservation.createAt)
+    const pastTime = createdAt.fromNow()
+    return  pastTime
+  }
   
   //Checar se existe um numero de mesa ja existente
   useEffect(() => {
@@ -93,7 +102,10 @@ export default function InfoModal({ reservations, reservation, isOpen, onClose, 
       >
         <ModalOverlay/>
         <ModalContent>
-          <ModalHeader>Editar reserva:</ModalHeader>
+          <ModalHeader>
+            Editar reserva:
+            <Text fontSize="sm" color="#aaa">Criada há {pastTimeSinceCreation(reservation)}</Text>
+          </ModalHeader>
           <ModalCloseButton onClick={handleClose} />
           <ModalBody pb={6}>
             <form action="">
