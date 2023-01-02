@@ -24,7 +24,10 @@ export default function IndividualReservation ({ reservations, reservation, isLo
   const [ isSending, setIsSending ] = useState(false)  
 
   const getResTotal = () => {
-    const total = Number(reservation.adult) + Number(reservation.teen) + Number(reservation.child) 
+    const total = 
+      Number(reservation.adult) + 
+      Number(reservation.teen) + 
+      Number(reservation.child) 
     if (total > 1) {
       return total + " pessoas"
     }
@@ -34,7 +37,7 @@ export default function IndividualReservation ({ reservations, reservation, isLo
   const creationPastTimeInMinutes = (reservation) => {
     const now = moment()
     const createdAt = moment(reservation.createAt)
-    const pastTimeInMinutes = Math.round(now.diff(createdAt) / 1000 / 60)
+    const pastTimeInMinutes = Math.round(now.diff(createdAt) / 1000 / 60) // 60s
     return pastTimeInMinutes
   }
 
@@ -49,7 +52,7 @@ export default function IndividualReservation ({ reservations, reservation, isLo
         >
         <CardHeader>
           <Heading size='md'>{reservation.name}</Heading>
-          {creationPastTimeInMinutes(reservation) < 5 &&
+          {creationPastTimeInMinutes(reservation) < 10 &&
           <Tag mt={1} colorScheme="twitter" variant="solid">
             <TagLabel>
               Recente

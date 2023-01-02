@@ -1,12 +1,15 @@
 import { 
   Box,
   Button, 
+  Center, 
   Flex,
+  Image,
   Input, 
   InputGroup, 
   InputRightAddon, 
   SimpleGrid, 
-  Stack, 
+  Stack,
+  Text, 
 } from "@chakra-ui/react";
 import { useState } from "react"
 import { SearchIcon } from "@chakra-ui/icons";
@@ -83,23 +86,34 @@ export default function Reservations () {
       px={3}
       borderRadius="md"
     >
-      <SimpleGrid 
-        mt={4} 
-        spacing={4} 
-        templateColumns='repeat(auto-fill, minmax(200px, 1fr))'
-      >
-        { !isLoading && !searchInputValue ?
-        reservations.map(res => {
-          return (
-            <IndividualReservation reservations={reservations} key={res._id} isLoading={isLoading} reservation={res}/>
-          )})
-        : !isLoading && filteredRes.map( res => {
-          return (
-            <IndividualReservation reservations={reservations} key={res._id} isLoading={isLoading} reservation={res}/>
-          )
-        })
-        }
-      </SimpleGrid>
+      {!isLoading && !reservations.length ?
+        <Flex mt={4} direction="column" justify="center" align="center">  
+          <Text>Nenhuma reserva encontrada.</Text>
+          <Image 
+            m="auto" 
+            w="80px" 
+            src ="https://static.thenounproject.com/png/469473-200.png"
+            alt="Empty-folder-img"
+          ></Image> 
+        </Flex>
+        :
+        <SimpleGrid 
+          mt={4} 
+          spacing={4} 
+          templateColumns='repeat(auto-fill, minmax(200px, 1fr))'
+        >
+          { !isLoading && !searchInputValue ?
+          reservations.map(res => {
+            return (
+              <IndividualReservation reservations={reservations} key={res._id} isLoading={isLoading} reservation={res}/>
+            )}).reverse()
+          : !isLoading && filteredRes.map( res => {
+            return (
+              <IndividualReservation reservations={reservations} key={res._id} isLoading={isLoading} reservation={res}/>
+            )
+          }).reverse()
+          }
+        </SimpleGrid>}
     </Box>
 
   </>

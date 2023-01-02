@@ -1,18 +1,20 @@
 import { 
   Container, 
+  Icon, 
   Tab, 
   TabList, 
   TabPanel, 
   TabPanels, 
   Tabs 
 } from "@chakra-ui/react"
-import { EditIcon, PlusSquareIcon, SearchIcon } from "@chakra-ui/icons"
+import { PlusSquareIcon, SearchIcon } from "@chakra-ui/icons"
 import { getSession } from "next-auth/react"
 import { useQueryClient } from "react-query"
 import Reservations from "../../components/Reservations"
 import { adminEmails } from "../_app"
 import CreateReservation from "../../components/CreateReservation"
-
+import { HiOutlineClock } from 'react-icons/hi'
+import Waitlist from "../../components/Waitlist"
 
 export default function Admin({ email }) {
   const queryClient = useQueryClient()
@@ -38,7 +40,7 @@ export default function Admin({ email }) {
             <PlusSquareIcon />
           </Tab>
           <Tab border="1px solid #C7936E" _selected={{bgColor: "#ffeadb"}} >
-            <EditIcon />
+            <Icon boxSize={5} as={HiOutlineClock}></Icon>
           </Tab>
 
         </TabList>
@@ -50,6 +52,9 @@ export default function Admin({ email }) {
           </TabPanel>
           <TabPanel >
             <CreateReservation />
+          </TabPanel>
+          <TabPanel >
+            <Waitlist/>
           </TabPanel>
 
         </TabPanels>

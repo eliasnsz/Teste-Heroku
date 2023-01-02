@@ -1,4 +1,4 @@
-import { Alert, AlertIcon, Button, Center, Container, Flex, FormLabel } from "@chakra-ui/react";
+import { Alert, AlertIcon, Button, Center, Container, Flex, FormLabel, useToast } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
@@ -21,7 +21,8 @@ export default function CreateReservation() {
     const [ obs, setObs ] = useState("")
 
     const [ isSending, setIsSending ] = useState(false)
-    const [ submitSucess, setSubmitSucess] = useState(false)
+
+    const toast = useToast()
 
     //Enviar reserva
     async function handleSubmit(e) {
@@ -42,10 +43,12 @@ export default function CreateReservation() {
         setObs("")
         setIsSending(false)
 
-        setSubmitSucess(true)
-        setTimeout(() => {
-            setSubmitSucess(false)
-        }, 3000);
+        toast({
+            title: 'Reserva criada com sucesso.',
+            status: 'success',
+            duration: 4000, //4 segundos
+            isClosable: true,
+        })
     }
 
     return (
@@ -97,13 +100,6 @@ export default function CreateReservation() {
                     </Button>
                 </Flex>
             </form>
-            {
-                submitSucess && 
-                <Alert mt={4} status='success'>
-                    <AlertIcon />
-                    Reserva criada com sucesso!
-                </Alert>
-            }
         </>
     )
 }
