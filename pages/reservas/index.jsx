@@ -6,44 +6,9 @@ import { EditIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import { useRef } from "react";
 import DeletingModal from "../../components/DeletingModal";
+import moment from "moment/moment";
 
 export default function Reservas() {
-  
-  const formattedDate = (date) => {
-    const getDate = new Date( date.replaceAll("-", ",") )
-    const getWeekDay = () => {
-      switch (getDate.getDay()) {
-        case 0:
-          return "Domingo"
-          break;
-        case 1:
-          return "Segunda-feira"
-          break;
-        case 2:
-          return "Terça-feira"
-          break;
-        case 3:
-          return "Quarta-feira"
-          break;
-        case 4:
-          return "Quinta-feira"
-          break;
-        case 5:
-          return "Sexta-feira"
-          break;
-        case 6:
-          return "Sábado"
-          break;
-        default:
-          break;
-      }
-    } 
-    const year = getDate.getFullYear()
-    const month = getDate.getMonth() + 1
-    const day = getDate.getDate() < 10 ? `0${getDate.getDate()}` : getDate.getDate() 
-  
-    return (`${day}/${month}/${year} (${getWeekDay()})`)
-  }
 
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = useRef()
@@ -59,6 +24,12 @@ export default function Reservas() {
   const handleDelete = async (uuid) => {
     const res = await axios.delete(`../api/reservas/delete/${uuid}`)
     window.location.href = "/reservas"
+  }
+
+  const formmatedDate = (date) => {
+
+    return moment(date).format("DD/MM/YYYY - (dddd)")
+
   }
 
   if (isLoading) {
@@ -131,7 +102,7 @@ export default function Reservas() {
             return (
               <Card key={res._id} textAlign="center" boxShadow="lg" border="1px solid #00000010">
                 <CardHeader>
-                  <Heading size='md'>{formattedDate(res.date)}</Heading>
+                  <Heading size='md'>{formmatedDate(res.date)}</Heading>
                 </CardHeader>
                 <CardBody>
                   <Text>{res.name}</Text>

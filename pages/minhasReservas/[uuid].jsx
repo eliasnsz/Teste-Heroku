@@ -180,13 +180,17 @@ export default function MinhasReservas ({ uuid, externalQuantity, internalQuanti
                   value={reservation.email}
                 />
               </FormLabel>
-              <FormLabel>
-                Data da reserva:
-                <InputDate 
-                  value={reservation.date} 
-                  disabled
-                />
-              </FormLabel>
+              <Tooltip
+                label="Para alterar a data da reserva delete a atual e crie uma 
+                nova com a data desejada." aria-label='A tooltip'>
+                <FormLabel>
+                  Data da reserva:
+                  <InputDate 
+                    value={reservation.date} 
+                    disabled
+                    />
+                </FormLabel>
+              </Tooltip>
 
               <Text fontWeight={500}>
                 Quantidade de reservas:

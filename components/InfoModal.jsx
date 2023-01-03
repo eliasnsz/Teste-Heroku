@@ -31,10 +31,12 @@ import axios from "axios"
 import { useQueryClient } from "react-query"
 import GlobalAlert from "./GlobalAlert"
 import moment from "moment/moment"
+import { useSession } from "next-auth/react"
 
 export default function InfoModal({ reservations, reservation, isOpen, onClose, isSending, setIsSending }) {
 
   const queryClient = useQueryClient()
+  const { data: session } = useSession()
 
   const [ name, setName ] = useState(reservation.name)
   const [ mesa, setMesa ] = useState(reservation.mesa)
@@ -118,7 +120,12 @@ export default function InfoModal({ reservations, reservation, isOpen, onClose, 
         <ModalContent>
           <ModalHeader pb={0}>
             Editar reserva:
-            <Text fontSize="sm" color="#aaa">Criada há {pastTimeSinceCreation(reservation)}</Text>
+            <Text fontSize="sm" color="#aaa">
+            {reservation.email ?
+              `Criada há ${pastTimeSinceCreation(reservation)} pelo site` :
+              `Criada há ${pastTimeSinceCreation(reservation)} pela administração (${session?.user?.name})`
+            }
+            </Text>
           </ModalHeader>
           <ModalCloseButton onClick={handleClose} />
           <ModalBody>
