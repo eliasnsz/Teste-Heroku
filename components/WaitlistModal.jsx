@@ -12,25 +12,32 @@ export default function WaitlistModal({ isOpen, onOpen, onClose }) {
   const [ name, setName ] = useState("")
   const [ quantity, setQuantity ] = useState(1)
   
+  const [ isSending, setIsSending ] = useState(false)
+
   const queryClient = useQueryClient()
   const date = moment().format("YYYY-MM-DD")
   
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsSending(true)
     console.log(name, quantity, date);
     await axios.post(`${baseUrl}/api/waitlist`, {
       name, quantity, date
     })
     queryClient.invalidateQueries("waitlist")
     setName("")
-    setQuantity(1 )
+    setQuantity(1)
     onClose() 
+    setIsSending(false)
   }
 
   return (
     <>
       <Modal blockScrollOnMount={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
+        <ModalOverlay 
+          bg='blackAlpha.400'
+          backdropFilter='blur(5px)'
+        />
         <form onSubmit={handleSubmit}>
           <ModalContent>
             <ModalHeader>
@@ -58,7 +65,13 @@ export default function WaitlistModal({ isOpen, onOpen, onClose }) {
             </ModalBody>
             <ModalFooter>
               <Button variant='ghost' onClick={onClose}>Cancelar</Button>
-              <Button colorScheme='green' type="submit" mr={3}>
+              <Button 
+                colorScheme='green' 
+                type="submit" 
+                mr={3}
+                isLoading={isSending}
+                isDisabled={isSending}
+              >
                 Adicionar
               </Button>
             </ModalFooter>

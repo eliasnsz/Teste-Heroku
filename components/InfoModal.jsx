@@ -111,7 +111,10 @@ export default function InfoModal({ reservations, reservation, isOpen, onClose, 
         onClose={onClose}
         isCentered="true"
       >
-        <ModalOverlay/>
+        <ModalOverlay 
+          bg='blackAlpha.400'
+          backdropFilter='blur(5px)'
+        />  
         <ModalContent>
           <ModalHeader pb={0}>
             Editar reserva:

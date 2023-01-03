@@ -40,5 +40,17 @@ export default async function Handler(req, res) {
     return res.status(200).end()
   }
 
+  if (req.method === "DELETE") {
+    const db = await connectToDatabase()
+    
+    const collection = await db.collection("waitlist")
+
+    const { uuid } = req.body
+
+    const waitlistRegistered = await collection.findOneAndDelete({ _id: ObjectId(uuid) })
+
+    return res.status(200).end()
+  }
+
   return res.status(200).end()
 } 

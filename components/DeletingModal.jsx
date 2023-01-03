@@ -13,7 +13,10 @@ export default function DeletingModal({ isOpen, onOpen, onClose, cancelRef, hand
         isOpen={isOpen}
         isCentered
       >
-        <AlertDialogOverlay />
+        <AlertDialogOverlay 
+          bg='blackAlpha.400'
+          backdropFilter='blur(5px)'
+        />
 
         <AlertDialogContent>
           <AlertDialogHeader>Excluir reserva? </AlertDialogHeader>

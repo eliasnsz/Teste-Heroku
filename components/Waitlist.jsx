@@ -1,15 +1,28 @@
 import { Button, Flex, FormLabel, Heading, Icon, Image, Skeleton, Stack, Table, TableCaption, TableContainer, Tbody, Td, Text, Th, Thead, Tr, useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { MdOutlineAddCircle } from 'react-icons/md'
 import WaitlistModal from "./WaitlistModal";
+import WaitlistStatusModal from "./WaitlistStatusModal"
 import moment from "moment";
 import axios from "axios";
 import { baseUrl } from "../pages/_app";
 
 export default function Waitlist() {
 
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { 
+    isOpen: isOpenWaitListModal, 
+    onOpen: openWaitListModal, 
+    onClose: closeWaitListModal 
+  } = useDisclosure()
+
+  const { 
+    isOpen: isOpenWaitListStatusModal, 
+    onOpen: openWaitListStatusModal, 
+    onClose: closeWaitListStatusModal 
+  } = useDisclosure()
+
+  const [ dataForModal, setDataForModal ] = useState(null)
 
   const date = moment().format("YYYY-MM-DD")
   
@@ -21,14 +34,24 @@ export default function Waitlist() {
     refetchOnWindowFocus: false
   })
 
+  
+
   if (!isLoading) {
     return (
       <>
-        <WaitlistModal isOpen={isOpen} onOpen={onOpen} onClose={onClose}/>
+        {dataForModal &&
+          <WaitlistStatusModal 
+          isOpen={isOpenWaitListStatusModal} 
+          onOpen={openWaitListStatusModal}
+          onClose={closeWaitListStatusModal}
+          data={dataForModal.item}
+          pos={dataForModal.pos}
+        />}
+        <WaitlistModal isOpen={isOpenWaitListModal} onOpen={openWaitListModal} onClose={closeWaitListModal}/>
         <Flex direction="column" gap={4}>
           {waitlist.length ?
           <TableContainer>
-            <Table variant='simple'>
+            <Table size={["sm", "md", "md"]} variant='striped'>
               <Thead>
                 <Tr>
                   <Th isNumeric>Fila</Th>
@@ -41,8 +64,12 @@ export default function Waitlist() {
                   {
                     waitlist.map((item, index) => {
                       return (
-                        <Tr key={index + 1}>
-                          <Td isNumeric>{index + 1}</Td>
+                        <Tr 
+                          key={index + 1} 
+                          _hover={{ cursor: "pointer" }} 
+                          onClick={() => { setDataForModal({item, pos: index + 1}); openWaitListStatusModal() }}
+                        >
+                          <Td isNumeric>{`${index + 1}º`}</Td>
                           <Td w="100%">{item.name}</Td>
                           <Td isNumeric>{item.quantity}</Td>
                         </Tr>
@@ -55,7 +82,7 @@ export default function Waitlist() {
           </TableContainer>
           :
             <div>
-              <Text textAlign="center" fontWeight="600">Lista de espera vazia</Text>
+              <Text textAlign="center">Lista de espera vazia</Text>
               <Image 
                 m="auto" 
                 w="80px" 
@@ -64,7 +91,7 @@ export default function Waitlist() {
               ></Image>
             </div>      
           }
-          <Button colorScheme="green" onClick={onOpen}>
+          <Button colorScheme="green" onClick={openWaitListModal}>
             Adicionar
             <Icon ml={1} as={MdOutlineAddCircle} boxSize={6}></Icon>
           </Button>
