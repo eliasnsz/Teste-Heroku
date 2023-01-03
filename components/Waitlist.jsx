@@ -30,7 +30,7 @@ export default function Waitlist() {
     const response = await axios.get(`${baseUrl}/api/waitlist`)
     return response.data
   }, {
-    staleTime: 1000 * 60, // 60 segundos
+    refetchInterval: 1000 * 60, // 60 segundos
     refetchOnWindowFocus: false
   })
 
