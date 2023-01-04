@@ -1,11 +1,13 @@
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import { Avatar, MenuIcon, MenuDivider, Button, Flex, IconButton, Menu, MenuButton, MenuGroup, MenuItem, MenuList, Stack, Text, Tag } from "@chakra-ui/react";
+import { Avatar, MenuIcon, MenuDivider, Button, Flex, IconButton, Menu, MenuButton, MenuGroup, MenuItem, MenuList, Stack, Text, Tag, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, DrawerFooter, Icon } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { adminEmails } from "../pages/_app";
+import { FiMenu } from 'react-icons/fi'
+import DrawerButton from "./DrawerButton";
 
-export default function HeaderMenu() {
+export default function HeaderMenu({ isOpen, onOpen, onClose }) {
   
   const {data: session} = useSession()
 
@@ -24,43 +26,57 @@ export default function HeaderMenu() {
 
   if (session) {
     return (
-      <Menu>
-        <MenuButton
-          as={Avatar}
-          aria-label='Options'
-          src={session.user.image}
-          size="md"
-          cursor="pointer"
-          variant='outline'
-        />
-        <MenuList>
-          <MenuGroup fontSize="md" title={`Bem-vindo, ${getFirstName()}!`}>
-            {isAdmin && <Tag ml={4} colorScheme="red" variant="solid">Administrador</Tag>}
-            <MenuDivider />
-            <MenuItem pl={4} as={Link} href="/">
-              Inicio
-            </MenuItem>
-            <MenuItem pl={4} as={Link} href="/reservar">
-              Nova reserva
-            </MenuItem>
-            <MenuItem pl={4} as={Link} href="/reservas">
-              Minhas reservas
-            </MenuItem>
-            <MenuItem pl={4} as={Link} href="/cardapio">
-              Cardapio
-            </MenuItem>
-            {isAdmin &&
-            <MenuItem pl={4} as={Link} href="/admin">
-              Painel Administrativo
-            </MenuItem>}
-            <MenuDivider />
-            <MenuItem onClick={() => signOut({ redirect: true, callbackUrl: "/" })}>
-              <ArrowBackIcon mr={2}/>
-              Sair
-            </MenuItem>
-          </MenuGroup>
-        </MenuList>
-      </Menu>
+      <>
+        {/* <Menu>
+          <MenuButton
+            as={Avatar}
+            aria-label='Options'
+            src={session.user.image}
+            size={["sm", "sm", "md"]}
+            cursor="pointer"
+            variant='outline'
+          />
+          <MenuList>
+            <MenuGroup fontSize="md" title={`Bem-vindo, ${getFirstName()}!`}> */}
+
+        <Icon mt={2} cursor="pointer" as={FiMenu} boxSize="8" onClick={onOpen}></Icon>
+
+        <Drawer
+          isOpen={isOpen}
+          placement='right'
+          onClose={onClose}
+        >
+          <DrawerOverlay 
+            bg='blackAlpha.400'
+            backdropFilter='blur(5px)'
+          />
+          <DrawerContent bgColor="#222">
+            <DrawerCloseButton color="brown.100"/>
+            <DrawerHeader>
+              {isAdmin && <Tag ml={4} colorScheme="red" variant="solid">Administrador</Tag>}
+            </DrawerHeader>
+
+            <DrawerBody>
+              <Stack align="flex-start" w="100">
+                <DrawerButton href={"/"}>Início</DrawerButton>
+                <DrawerButton href={"/cardapio"}>Cardápio</DrawerButton>
+                <DrawerButton href={"/reservar"}>Nova reservas</DrawerButton>
+                <DrawerButton href={"/reservas"}>Minhas reservas</DrawerButton>
+                {isAdmin &&
+                <DrawerButton href={"/admin"}>Painel Administrativo</DrawerButton>
+                }
+                <DrawerButton 
+                  onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
+                  href="/"
+                >
+                  <ArrowBackIcon mr={2}/>
+                  Sair
+                </DrawerButton>
+              </Stack>
+            </DrawerBody>
+          </DrawerContent>
+        </Drawer>
+      </>
     )
   }
 

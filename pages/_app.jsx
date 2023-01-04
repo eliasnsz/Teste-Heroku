@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from "react-query"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
 import { getSession, SessionProvider } from "next-auth/react"
 import { Header } from "../components/Header"
+import "@fontsource/playfair-display"
+import "@fontsource/montserrat"
 
 moment.locale('pt-br', {
   months : 'janeiro_fevereiro_março_abril_maio_junho_julho_agosto_setembro_outubro_novembro_dezembro'.split('_'),
@@ -62,9 +64,16 @@ export const adminEmails = [
 const theme = extendTheme({
   colors: {
     brown: {
-      300: '#ffeadb',
-      400: '#C7936E',
-      500: '#5B3914',
+      100: '#FFEFDF',
+      200: '#F3D5B5',
+      300: '#E7BC91',
+      400: '#D4A276',
+      500: '#BC8A5F',
+      600: '#A47148',
+      700: '#8B5E34',
+      800: '#6F4518',
+      900: '#603808',
+      1000: '#583101'
     },
   },
 })
