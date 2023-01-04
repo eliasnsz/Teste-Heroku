@@ -1,13 +1,13 @@
 import { Button, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-export default function DrawerButton({ children, href }) {
+export default function DrawerButton({ children, ...props }) {
   return (
     <Button 
+      {...props}
       variant='ghost' 
       w="100%"
       as={Link} 
-      href={href}
       color="brown.100"
       role="group"
       _hover={{ bgColor: "brown.100" }}

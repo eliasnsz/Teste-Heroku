@@ -17,6 +17,8 @@ export default function HeaderButton ({ children }) {
       }}
       onMouseEnter={() => setWidth("100%")}
       onMouseLeave={() => setWidth("0%")}
+      _hover={{ color: "brown.700"}}
+      transition=".2s ease"
     >{children}</Text>
   )
 }
