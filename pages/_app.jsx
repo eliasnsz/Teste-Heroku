@@ -1,9 +1,9 @@
 import moment from "moment/moment"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { ChakraProvider, extendTheme } from "@chakra-ui/react"
-import { getSession, SessionProvider } from "next-auth/react"
-import { Header } from "../components/Header"
+import { SessionProvider } from "next-auth/react"
 import "@fontsource/playfair-display"
+import "@fontsource/playfair-display/700.css"
 import "@fontsource/montserrat"
 
 moment.locale('pt-br', {
@@ -51,8 +51,8 @@ moment.locale('pt-br', {
 
 const queryClient = new QueryClient()
 
-// export const baseUrl = "http://localhost:3000"
-export const baseUrl = "https://teste-heroku-eliasnsz.vercel.app"
+export const baseUrl = "http://localhost:3000"
+// export const baseUrl = "https://teste-heroku-eliasnsz.vercel.app"
 export const externalMaxCapacity = 250
 export const internalMaxCapacity = 200
 export const adminEmails = [ 
@@ -62,6 +62,13 @@ export const adminEmails = [
 ]
 
 const theme = extendTheme({
+  styles: {
+    global: {
+      'html, body': {
+        fontFamily: "primary"
+      },
+    },
+  },
   colors: {
     brown: {
       100: '#FFEFDF',
@@ -76,6 +83,10 @@ const theme = extendTheme({
       1000: '#583101'
     },
   },
+  fonts: {
+    primary: "Montserrat, sans-serif",
+    secondary: "Playfair Display, serif"
+  }
 })
 
 function MyApp({ Component, pageProps: {session, ...pageProps} }) {

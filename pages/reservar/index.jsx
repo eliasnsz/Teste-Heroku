@@ -24,12 +24,9 @@ import InputObs from "../../components/InputObs"
 import { connectToDatabase } from "../api/reservas"
 import { baseUrl, externalMaxCapacity, internalMaxCapacity } from "../_app"
 
-export default function Reservar({ sessionEmail, externalQuantity, internalQuantity, reservations }) {
+export default function Reservar({ sessionEmail: email, externalQuantity, internalQuantity, reservations }) {
 
-  const queryClient = useQueryClient()
-  
   const [ name, setName ] = useState("")
-  const [ email, setEmail ] = useState(sessionEmail)
   const [ local, setLocal ] = useState("")
   const [ adult, setAdult ] = useState(1)
   const [ teen, setTeen ] = useState(0)
@@ -57,6 +54,7 @@ export default function Reservar({ sessionEmail, externalQuantity, internalQuant
   }
 
   //Checar se esta registrando numa data que ja ha reserva
+  //Checar se a data desejada ja passou
   useEffect(() => {
     const dates = reservations.map(res => res.date)
     if(dates.includes(date)) {
@@ -64,10 +62,7 @@ export default function Reservar({ sessionEmail, externalQuantity, internalQuant
       return
     }
     setIsExistingDate(false)
-  }, [date])
 
-  //Checar se a data desejada ja passou
-  useEffect(() => {
     if (date) {
       const now = new Date().toISOString().split("T")[0]
       const reservationDate = new Date(date).toISOString().split("T")[0]
