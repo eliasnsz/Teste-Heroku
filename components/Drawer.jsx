@@ -13,102 +13,62 @@ export default function HeaderMenu({ isOpen, onOpen, onClose }) {
   
   const {data: session} = useSession()
 
-  const getFirstName = () => {
-    const name = session.user.name
-    if (session) {
-      const index = name.indexOf(" ")
-      if (index > -1) {
-        return name.slice(0, index)
-      }
-      return name
-    }
-  }
-
-  const isAdmin = session && adminEmails.includes(session.user.email)
-
-  if (session) {
-    return (
-      <>
-        {/* <Menu>
-          <MenuButton
-            as={Avatar}
-            aria-label='Options'
-            src={session.user.image}
-            size={["sm", "sm", "md"]}
-            cursor="pointer"
-            variant='outline'
-          />
-          <MenuList>
-            <MenuGroup fontSize="md" title={`Bem-vindo, ${getFirstName()}!`}> */}
-
-        <Icon mt={2} cursor="pointer" as={FiMenu} boxSize="8" onClick={onOpen}></Icon>
-
-        <Drawer
-          isOpen={isOpen}
-          placement='right'
-          onClose={onClose}
-        >
-          <DrawerOverlay 
-            bg='blackAlpha.400'
-            backdropFilter='blur(5px)'
-          />
-          <DrawerContent bgColor="#222">
-            <DrawerHeader >
-              <Flex align="center">
-                <Image
-                  ml={3}
-                  as={Avatar}
-                  aria-label='Options'
-                  src={session.user.image}
-                  size="md"
-                  cursor="pointer"
-                  variant='outline'
-                />
-                <Box>
-                  <Text color="brown.100" ml={4} fontSize="lg">{`Bem-vindo, ${getFirstName()}.`}</Text>
-                  {isAdmin && <Tag ml={4} mt={1} colorScheme="red" variant="solid">Administrador</Tag>}
-                </Box>
-              </Flex>
-            </DrawerHeader>
-
-            <DrawerBody>
-              <Stack align="flex-start" w="100">
-                <DrawerButton href={"/"}>Início</DrawerButton>
-                <DrawerButton href={"/cardapio"}>Cardápio</DrawerButton>
-                <DrawerButton href={"/reservar"}>Nova reservas</DrawerButton>
-                <DrawerButton href={"/reservas"}>Minhas reservas</DrawerButton>
-                {isAdmin &&
-                <DrawerButton href={"/admin"}>Painel Administrativo</DrawerButton>
-                }
-                <DrawerButton 
-                  onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
-                  href="/"
-                >
-                  <Icon as={MdLogout} mr={2}/>
-                  Sair
-                </DrawerButton>
-              </Stack>
-            </DrawerBody>
-          </DrawerContent>
-        </Drawer>
-      </>
-    )
-  }
+  const isAdmin = adminEmails.includes(session?.user?.email)
 
   return (
-    <Flex 
-      color="#000" 
-      align="" 
-      gap={2}
-    >
+    <>
+      <Icon cursor="pointer" as={FiMenu} boxSize="8" onClick={onOpen}></Icon>
 
-      <Link href="/login">
-        <Button 
-          size="sm" 
-          colorScheme="green"
-        >Entrar</Button>
-      </Link>
+      <Drawer
+        isOpen={isOpen}
+        placement='right'
+        onClose={onClose}
+      >
+        <DrawerOverlay 
+          bg='blackAlpha.100'
+          backdropFilter='blur(5px)'
+          />
+        <DrawerContent bgColor="brown.100" color="brown.1000" >
+          <DrawerCloseButton />
+          <DrawerHeader mt={4}>
+            <Flex align="center">
+              <Image
+                ml={3}
+                as={Avatar}
+                src={session?.user?.image}
+                size="md"
+                cursor="pointer"
+                variant='outline'
+                />
+              <Box>
+                <div>
+                  <Text ml={4} fontSize="lg">{session?.user?.name}</Text>
+                  {isAdmin && <Tag ml={4} mt={1} colorScheme="red" variant="solid" w="fit-content">Administrador</Tag>}
+                </div>
+              </Box>
+            </Flex>
+          </DrawerHeader>
 
-    </Flex>  
+          <DrawerBody>
+            <Stack align="flex-start" w="100">
+              <DrawerButton href={"/"}>Início</DrawerButton>
+              <DrawerButton href={"/cardapio"}>Cardápio</DrawerButton>
+              <DrawerButton href={"/reservar"}>Nova reserva</DrawerButton>
+              <DrawerButton href={"/reservas"}>Minhas reservas</DrawerButton>
+              {isAdmin &&
+              <DrawerButton href={"/admin"}>Painel Administrativo</DrawerButton>
+              }
+              <DrawerButton 
+                onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
+                href="/"
+              >
+                <Icon as={MdLogout} mr={2}/>
+                Sair
+              </DrawerButton>
+            </Stack>
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
+    </>
   )
 }

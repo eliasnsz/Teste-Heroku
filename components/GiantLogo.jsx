@@ -1,4 +1,4 @@
-import { Image } from "@chakra-ui/react";
+import { Image, Spinner } from "@chakra-ui/react";
 import Link from "next/link";
 
 export default function GiantLogo() {

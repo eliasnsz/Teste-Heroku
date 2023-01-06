@@ -10,6 +10,7 @@ export default function MainTitle() {
           textAlign="center"
           fontSize={["0.9em", "0.9em", "1em", "1.1em", "1.2em"  ]}
           fontWeight="300"
+          textShadow="lg"
           mb={2}
         >
           Bem-vindo(a) ao Recanto Andreeta
@@ -69,7 +70,7 @@ function CtaButton({ href, children }) {
         colorScheme="green"
         variant="solid"
         borderRadius="none"
-      >
+        >
         { children }
       </Button>
     </Link>

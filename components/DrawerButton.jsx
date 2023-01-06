@@ -8,7 +8,7 @@ export default function DrawerButton({ children, ...props }) {
       variant='ghost' 
       w="100%"
       as={Link} 
-      color="brown.100"
+      color="brown.1000"
       role="group"
       _hover={{ bgColor: "brown.100" }}
     >

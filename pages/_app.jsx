@@ -67,6 +67,9 @@ const theme = extendTheme({
       'html, body': {
         fontFamily: "primary"
       },
+      'body': {
+        backgroundColor: "brown.100"
+      }
     },
   },
   colors: {

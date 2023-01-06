@@ -17,7 +17,6 @@ import { HiOutlineClock } from 'react-icons/hi'
 import Waitlist from "../../components/Waitlist"
 
 export default function Admin({ email }) {
-  const queryClient = useQueryClient()
   
   return (
     <>

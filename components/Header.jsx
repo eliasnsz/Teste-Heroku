@@ -5,52 +5,31 @@ import HeaderButton from "./HeaderButton";
 import Drawer from "./Drawer";
 
 
-export function Header() {
+export default function Header() {
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   return(
     <>
       <Box 
-        minH="8vh" 
-        position={["static", "static", "absolute"]}
         w="100%"
         bgColor={["brown.100", "brown.100", "transparent"]}
       >
         <Flex 
-          align="flex-start"
-          w={["100%", "100%", "70%"]}
-          px={[4, 4, 12]} 
-          pt={[2, 2, 4]}
+          align="center"
+          w="100%"
+          minH="8vh"
+          bgColor="brown.200"
+          borderBottom="4px solid"
+          borderColor="brown.300"
+          px={8}
           justify="space-between"
         >
-          <UnorderedList 
-            w="100%"
-            color="brown.1000" 
-            fontWeight="600"
-            fontSize={["sm", "sm", "md"]}
-            fontFamily="Montserrat"
-            listStyleType="none"
-            mt={3}
-          >
-            <Flex justify="space-evenly">
-              <Link href="/">
-                <ListItem _hover={{ cursor: "pointer" }}>
-                  <HeaderButton>Início</HeaderButton>
-                </ListItem>
-              </Link>
-              <Link href="/cardapio">
-                <ListItem _hover={{ cursor: "pointer" }}>
-                  <HeaderButton>Cardápio</HeaderButton>
-                </ListItem>
-              </Link>
-              <Link href="/">
-                <ListItem _hover={{ cursor: "pointer" }}>
-                  <HeaderButton>Contato</HeaderButton>
-                </ListItem>
-              </Link>
-            </Flex>
-          </UnorderedList>
+          <Image 
+            alt="recanto-andreeta-logo"
+            w="80px"
+            src="https://i.imgur.com/xHAkxha.png"
+          />
 
           <Drawer isOpen={isOpen} onOpen={onOpen} onClose={onClose}/>
         </Flex>
