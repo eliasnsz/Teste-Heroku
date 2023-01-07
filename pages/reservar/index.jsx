@@ -14,10 +14,12 @@ import PageTitle from "../../components/PageTitle";
 import DefaultContainer from "../../components/DefaultContainer"
 import Router from "next/router";
 import { useState } from "react";
+import { useToast } from "@chakra-ui/react";
 
 export default function Reservar() {
 
   const queryClient = useQueryClient()
+  const toast = useToast()
 
   const [ isSubmiting, setIsSubmiting ] = useState(false)
 
@@ -35,22 +37,32 @@ export default function Reservar() {
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmiting(true)
-    const { value: name} = e.target.name
-    const { value: date} = e.target.date
-    const { value: adult} = e.target.adult
-    const { value: teen} = e.target.teen
-    const { value: child} = e.target.child
-    const { value: local} = e.target.local
-    const { value: obs} = e.target.obs
+    const fields = [ "name", "date", "adult", "teen", "child", "local", "obs" ]
+
+    const reservation = {}
+    for (let i = 0; i < fields.length; i++) {
+      reservation[fields[i]] = e.target[fields[i]].value
+    }
+
     await axios.post("/api/reservas", {
-      name, date, adult, teen, child, local, obs
+      ...reservation
     });
+
     queryClient.invalidateQueries("reservas")
     Router.push("/reservas")
-    setTimeout(() => {
-      setIsSubmiting(false)
-    }, 2000);
+
+    sendSucessMessage()
   } 
+
+  function sendSucessMessage() {
+    toast({
+      title: 'Pronto!',
+      description: "Sua reserva foi criada com sucesso.",
+      status: 'success',
+      duration: 3000,
+      isClosable: true,
+    })
+  }
 
   return (
     <>

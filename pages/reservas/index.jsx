@@ -3,6 +3,7 @@ import axios from "axios"
 import { getSession, useSession } from "next-auth/react"
 import { useQuery } from "react-query"
 import DefaultContainer from "../../components/DefaultContainer"
+import EmptyPage from "../../components/EmptyPage"
 import Header from "../../components/Header"
 import LoadingScreen from "../../components/LoadingScreen"
 import PageTitle from "../../components/PageTitle"
@@ -29,10 +30,19 @@ export default function Reservas({ userSession: session }) {
   return(
     <>
       <Header />
-      <DefaultContainer maxW="3xl" >
+      <DefaultContainer maxW="100%">
         <PageTitle>Minhas Reservas</PageTitle>
+        {
+        !thisUserReservations.length && 
+        <EmptyPage 
+          action="Reservar agora"
+          href="/reservar"
+        >Você ainda não tem nenhuma reserva</EmptyPage>
+        }
+
         <SimpleGrid 
-          columns={[1, 1, 2, 2]} 
+          p={4}
+          columns={[1, 1, 2, 2, 3, 3]} 
           w="fit-content" 
           m='auto' 
           spacing={8}
