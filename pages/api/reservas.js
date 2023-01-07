@@ -3,6 +3,7 @@ import { authOptions } from "./auth/[...nextauth]"
 import { connectToDatabase } from "./database"
 import moment from "moment/moment"
 import { adminEmails } from "../_app"
+import { ObjectId } from "mongodb"
 
 export default async function Handler(req, res) {
   
@@ -56,6 +57,15 @@ export default async function Handler(req, res) {
 
     return res.status(200).end()
 
+  }
+
+  if (req.method === "DELETE") {
+
+    const { uuid, date } = req.body
+
+    const reservations = await db.collection(date).findOneAndDelete({ _id: ObjectId(uuid) })
+    console.log(reservations);
+    return res.status(200).end()
   }
 
   return res.status(200).end()

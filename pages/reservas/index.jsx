@@ -1,8 +1,9 @@
-import { SimpleGrid } from "@chakra-ui/react"
+import { SimpleGrid, useDisclosure } from "@chakra-ui/react"
 import axios from "axios"
 import { getSession, useSession } from "next-auth/react"
 import { useQuery } from "react-query"
 import DefaultContainer from "../../components/DefaultContainer"
+import DeletingModal from "../../components/DeletingModal"
 import EmptyPage from "../../components/EmptyPage"
 import Header from "../../components/Header"
 import LoadingScreen from "../../components/LoadingScreen"
@@ -33,11 +34,13 @@ export default function Reservas({ userSession: session }) {
       <DefaultContainer maxW="100%">
         <PageTitle>Minhas Reservas</PageTitle>
         {
-        !thisUserReservations.length && 
-        <EmptyPage 
+          !thisUserReservations.length && 
+          <EmptyPage 
           action="Reservar agora"
           href="/reservar"
-        >Você ainda não tem nenhuma reserva</EmptyPage>
+        >
+          Você ainda não tem nenhuma reserva
+        </EmptyPage>
         }
 
         <SimpleGrid 
@@ -46,16 +49,20 @@ export default function Reservas({ userSession: session }) {
           w="fit-content" 
           m='auto' 
           spacing={8}
-        >
+          >
           {thisUserReservations.map((res, id) => {
+            
             return <ReservationCard key={id} reservation={res} />
+            
           })}
         </SimpleGrid>
       </DefaultContainer>
     </>
   )
-
+  
 }
+
+
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context)

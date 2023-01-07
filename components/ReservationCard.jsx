@@ -1,11 +1,15 @@
-import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Center, Divider, Flex, Heading, HStack, Icon, IconButton, Image, Img, Stack, Text, useColorModeValue } from "@chakra-ui/react";
+import { Avatar, Box, Button, ButtonGroup, Card, CardBody, CardFooter, CardHeader, Center, Divider, Flex, Heading, HStack, Icon, IconButton, Image, Img, Stack, Text, useColorModeValue, useDisclosure } from "@chakra-ui/react";
 import { BsArrowUpRight, BsPeopleFill } from 'react-icons/bs'
 import { BiEdit, BiChair } from 'react-icons/bi'
 import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
 
 import moment from "moment";
+import DeletingModal from "./DeletingModal";
 
 export default function ReservationCard({ reservation }) {
+
+  const { isOpen, onOpen, onClose } = useDisclosure()
+
 
   return (
     <Center>
@@ -81,18 +85,25 @@ export default function ReservationCard({ reservation }) {
             justifyContent={'space-between'}
             roundedBottom={'sm'}
             borderLeft={'1px'}
+            onClick={onOpen}
             role="group"
             _hover={{ bg: "red.500"}}
             cursor="pointer"
             >
               <Icon 
-              color="brown.800"
-              _groupHover={{ color: "white  "  }}
-              as={FaTrashAlt}
+                color="brown.800"
+                _groupHover={{ color: "white  "  }}
+                as={FaTrashAlt}
               ></Icon>
           </Flex>
         </HStack>
       </Box>
+      <DeletingModal 
+        isOpen={isOpen}   
+        onOpen={onOpen} 
+        onClose={onClose} 
+        reservation={reservation}
+      />
     </Center> 
   )
 }
