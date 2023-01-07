@@ -1,7 +1,7 @@
 import { Box, Button, Center, Heading, Stack, Text } from "@chakra-ui/react";
 import Link from "next/link";
 
-export default function MainTitle() {
+export default function MainTitle({ isAuthing, setIsAuthing}) {
   return(
     <Center w='65%' h='100%'>
       <Box w="100%" h="40%">

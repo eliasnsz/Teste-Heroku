@@ -4,7 +4,7 @@ export default function NameInput({ ...props }) {
   
   return (
     <FormLabel fontWeight={600}>
-      Nome:
+      Nome completo:
       <Input
         autoComplete="name"
         variant="flushed"

@@ -1,4 +1,7 @@
 import { Box, Flex} from "@chakra-ui/react";
+import Router from "next/router";
+import { useState } from "react";
+import LoadingScreen from "../components/LoadingScreen";
 import MainTitle from "../components/MainTitle";
 import MainWallpaper from "../components/MainWallpaper";
 import SideMenu from "../components/SideMenu";
@@ -17,7 +20,7 @@ export default function Home() {
         <SideMenu />
         <MainWallpaper/>
         <WelcomeSection>
-          <MainTitle />
+          <MainTitle/>
         </WelcomeSection>
       </Flex>
     </>
