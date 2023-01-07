@@ -13,6 +13,7 @@ import SubmitButton from "../../components/Inputs/SubmitButton";
 import PageTitle from "../../components/PageTitle";
 import DefaultContainer from "../../components/DefaultContainer"
 import Router from "next/router";
+import { useState } from "react";
 
 export default function Reservar() {
 
@@ -29,8 +30,10 @@ export default function Reservar() {
 
   if (isLoading) return <LoadingScreen/>
 
+  const [ isSubmiting, setIsSubmiting ] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setIsSubmiting(true)
     const { value: name} = e.target.name
     const { value: date} = e.target.date
     const { value: adult} = e.target.adult
@@ -43,6 +46,7 @@ export default function Reservar() {
     });
     queryClient.invalidateQueries("reservas")
     Router.push("/reservas")
+    setIsSubmiting(false)
   } 
 
   return (
@@ -56,7 +60,10 @@ export default function Reservar() {
             <QuantityInputs />
             <LocalInput />
             <ObsInput />
-            <SubmitButton>
+            <SubmitButton 
+              isLoading={isSubmiting}
+              isDisabled={isSubmiting}
+            >
               Reservar
             </SubmitButton>
           </form>

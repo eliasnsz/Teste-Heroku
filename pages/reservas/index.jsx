@@ -11,8 +11,6 @@ import { baseUrl } from "../_app"
 
 export default function Reservas({ userSession: session }) {
 
-  console.log(session );
-
   //Get all reservations
   const { data: allReservations, isLoading } = useQuery("reservas", async () => {
     const response = await axios.get(`${baseUrl}/api/reservas`)
