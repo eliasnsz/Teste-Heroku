@@ -1,6 +1,6 @@
 import { SimpleGrid } from "@chakra-ui/react"
 import axios from "axios"
-import { useSession } from "next-auth/react"
+import { getSession, useSession } from "next-auth/react"
 import { useQuery } from "react-query"
 import DefaultContainer from "../../components/DefaultContainer"
 import Header from "../../components/Header"
