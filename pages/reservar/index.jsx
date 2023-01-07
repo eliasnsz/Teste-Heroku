@@ -18,6 +18,8 @@ import { useState } from "react";
 export default function Reservar() {
 
   const queryClient = useQueryClient()
+  
+  const [ isSubmiting, setIsSubmiting ] = useState(false)
 
   //Get all reservations
   const { data: allReservations, isLoading } = useQuery("reservas", async () => {
@@ -30,7 +32,6 @@ export default function Reservar() {
 
   if (isLoading) return <LoadingScreen/>
 
-  const [ isSubmiting, setIsSubmiting ] = useState(false)
   const handleSubmit = async (e) => {
     e.preventDefault()
     setIsSubmiting(true)
