@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 import { useQuery, useQueryClient } from "react-query";
 import Header from "../../components/Header";
 import { baseUrl } from "../_app";
@@ -12,13 +12,11 @@ import ObsInput from "../../components/Inputs/ObsInput";
 import SubmitButton from "../../components/Inputs/SubmitButton";
 import PageTitle from "../../components/PageTitle";
 import DefaultContainer from "../../components/DefaultContainer"
-import { useRouter } from "next/router";
+import { Router } from "next/router";
 
 export default function Reservar() {
 
-  const { data: session } = useSession()
   const queryClient = useQueryClient()
-  const router = new useRouter()
 
   //Get all reservations
   const { data: allReservations, isLoading } = useQuery("reservas", async () => {
@@ -44,7 +42,7 @@ export default function Reservar() {
       name, date, adult, teen, child, local, obs
     });
     queryClient.invalidateQueries("reservas")
-    router.push("/reservas")
+    Router.push("/reservas")
   } 
 
   return (
@@ -66,3 +64,23 @@ export default function Reservar() {
     </>
   )
 } 
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  if(!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      session
+    }
+  }
+
+}
