@@ -22,6 +22,7 @@ export default function Reservas() {
     refetchOnWindowFocus: false
   })
   
+  if (!session) router.push("/login")
   if (isLoading) return <LoadingScreen/>
 
   const thisUserReservations = allReservations
