@@ -1,7 +1,7 @@
 import { Box, Button, Center, Container, Divider, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
 import { getSession, useSession } from "next-auth/react";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import Header from "../../components/Header";
 import { baseUrl } from "../_app";
 import LoadingScreen from "../../components/LoadingScreen";
@@ -13,10 +13,12 @@ import ObsInput from "../../components/Inputs/ObsInput";
 import SubmitButton from "../../components/Inputs/SubmitButton";
 import PageTitle from "../../components/PageTitle";
 import DefaultContainer from "../../components/DefaultContainer"
+import Router from "next/router";
 
 export default function Reservar() {
 
   const { data: session } = useSession()
+  const queryClient = useQueryClient()
 
   //Get all reservations
   const { data: allReservations, isLoading } = useQuery("reservas", async () => {
@@ -27,7 +29,24 @@ export default function Reservar() {
     refetchOnWindowFocus: false
   })
 
+  if (!session) Router.push("/login")
   if (isLoading) return <LoadingScreen/>
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const { value: name} = e.target.name
+    const { value: date} = e.target.date
+    const { value: adult} = e.target.adult
+    const { value: teen} = e.target.teen
+    const { value: child} = e.target.child
+    const { value: local} = e.target.local
+    const { value: obs} = e.target.obs
+    await axios.post("/api/reservas", {
+      name, date, adult, teen, child, local, obs
+    });
+    queryClient.invalidateQueries("reservas")
+    Router.push("/reservas")
+  } 
 
   const teste = allReservations.filter(item => item.email === session?.user?.email)
 
@@ -35,7 +54,7 @@ export default function Reservar() {
     <>
       <Header/>
         <DefaultContainer max="xl">
-          <form action="/api/reservar" method="POST">
+          <form onSubmit={handleSubmit}>
             <PageTitle>Reservar</PageTitle>
             <NameInput />
             <DateInput />
@@ -50,23 +69,3 @@ export default function Reservar() {
     </>
   )
 } 
-
-export const getServerSideProps = async (context) => {
-  const session = await getSession(context)
-
-  if(!session) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false
-      }
-    }
-  }
-
-  return {
-    props: {
-      session
-    }
-  }
-
-}

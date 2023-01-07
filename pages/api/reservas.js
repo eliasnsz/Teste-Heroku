@@ -23,10 +23,9 @@ export default async function Handler(req, res) {
     return res.status(200).json(allReservations)
   }
   
-  if (req.method === "PUT") {
+  if (req.method === "POST") {
 
     const session = await unstable_getServerSession(req, res, authOptions)
-    const queryClient = new QueryClient()
 
     const isCreatedByAdmin = adminEmails.includes(session?.user?.email) 
 
@@ -56,8 +55,6 @@ export default async function Handler(req, res) {
     }
     
     await db.collection(date).insertOne(reservation)
-    await queryClient.invalidateQueries("reservas")
-
 
     return res.status(200).end()
 
