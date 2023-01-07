@@ -7,7 +7,6 @@ export default function GiantLogo() {
       <Image
         w={["130px", "130px", "200px"]}
         m="auto"
-        passHref
         alt="recanto-andreeta-logo"
         src="https://i.imgur.com/xHAkxha.png"
         mb={4}

@@ -14,6 +14,7 @@ export default function MainWallpaper() {
         boxSize="100%" 
         objectFit="cover" 
         objectPosition="80%"
+        alt="wallpaper"
       />
     </Box>
   )
