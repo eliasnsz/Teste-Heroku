@@ -35,7 +35,7 @@ export default function Reservar() {
     <>
       <Header/>
         <DefaultContainer max="xl">
-          <form action="/api/reservas" method="POST">
+          <form action="/api/reservar" method="POST">
             <PageTitle>Reservar</PageTitle>
             <NameInput />
             <DateInput />

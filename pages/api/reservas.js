@@ -2,8 +2,9 @@ import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "./auth/[...nextauth]"
 import { connectToDatabase } from "./database"
 import moment from "moment/moment"
-import { adminEmails } from "../_app"
+import { adminEmails, baseUrl } from "../_app"
 import { QueryClient } from "react-query"
+import { redirect } from "next/dist/server/api-utils"
 
 export default async function Handler(req, res) {
   
@@ -22,7 +23,7 @@ export default async function Handler(req, res) {
     return res.status(200).json(allReservations)
   }
   
-  if (req.method === "POST") {
+  if (req.method === "PUT") {
 
     const session = await unstable_getServerSession(req, res, authOptions)
     const queryClient = new QueryClient()
@@ -57,7 +58,8 @@ export default async function Handler(req, res) {
     await db.collection(date).insertOne(reservation)
     await queryClient.invalidateQueries("reservas")
 
-    return res.redirect("/reservas").status(201).end()
+
+    return res.status(200).end()
 
   }
 
