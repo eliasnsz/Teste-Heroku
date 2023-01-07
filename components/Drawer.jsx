@@ -36,6 +36,7 @@ export default function HeaderMenu({ isOpen, onOpen, onClose }) {
                 ml={3}
                 as={Avatar}
                 src={session?.user?.image}
+                alt="user-avatar"
                 size="md"
                 cursor="pointer"
                 variant='outline'

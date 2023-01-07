@@ -48,7 +48,7 @@ export default function MainTitle() {
 
 function SimpleButton ({ href, children }) {
   return (
-    <Link href={href}>
+    <Link href={href} passHref>
       <Button
         size="lg"
         color="#222"
@@ -64,7 +64,7 @@ function SimpleButton ({ href, children }) {
 
 function CtaButton({ href, children }) {
   return(
-    <Link href={href}>
+    <Link href={href} passHref>
       <Button
         size="lg"
         colorScheme="green"

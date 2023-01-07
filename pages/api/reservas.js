@@ -57,8 +57,9 @@ export default async function Handler(req, res) {
     await db.collection(date).insertOne(reservation)
     await queryClient.invalidateQueries("reservas")
 
-    return res.status(201).redirect("/reservas")
+    return res.redirect("/reservas").status(201).end()
 
   }
 
+  return res.status(200).end()
 }

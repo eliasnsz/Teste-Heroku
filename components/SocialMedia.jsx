@@ -6,6 +6,7 @@ export default function SocialMedia() {
   return (
     <Stack spacing={6} align="center" justify="center" my={12} direction="row">
       <Link 
+        passHref
         href="https://www.instagram.com/recantoandreeta/"
         target="_blank"
       >
@@ -19,6 +20,7 @@ export default function SocialMedia() {
         </Icon>
       </Link>
       <Link 
+        passHref
         href="https://www.facebook.com/recantoandreeta/"
         target="_blank"
       >
@@ -32,6 +34,7 @@ export default function SocialMedia() {
         </Icon>
       </Link>
       <Link 
+        passHref
         href="https://api.whatsapp.com/send?phone=5519998090924" 
         target="_blank"
       >

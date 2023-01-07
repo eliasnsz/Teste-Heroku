@@ -36,7 +36,7 @@ export default function SideMenuContent () {
 
 function Item ({ href, children}) {
   return (
-    <Link href={href}>
+    <Link href={href} passHref>
       <ListItem w="fit-content"  m="auto" _hover={{ cursor: "pointer" }}>
         <HeaderButton>{children}</HeaderButton>
       </ListItem>
