@@ -9,9 +9,7 @@ import PageTitle from "../../components/PageTitle"
 import ReservationCard from "../../components/ReservationCard"
 import { baseUrl } from "../_app"
 
-export default function Reservas() {
-
-  const { data: session } = useSession()
+export default function Reservas({ session }) {
 
   //Get all reservations
   const { data: allReservations, isLoading } = useQuery("reservas", async () => {
@@ -46,5 +44,25 @@ export default function Reservas() {
       </DefaultContainer>
     </>
   )
+
+}
+
+export const getServerSideProps = async (context) => {
+  const session = await getSession(context)
+
+  if(!session) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false
+      }
+    }
+  }
+
+  return {
+    props: {
+      session
+    }
+  }
 
 }

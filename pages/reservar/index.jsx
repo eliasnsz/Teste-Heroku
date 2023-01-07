@@ -12,7 +12,7 @@ import ObsInput from "../../components/Inputs/ObsInput";
 import SubmitButton from "../../components/Inputs/SubmitButton";
 import PageTitle from "../../components/PageTitle";
 import DefaultContainer from "../../components/DefaultContainer"
-import { Router } from "next/router";
+import Router from "next/router";
 
 export default function Reservar() {
 
