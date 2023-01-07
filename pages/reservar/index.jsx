@@ -18,7 +18,7 @@ import { useState } from "react";
 export default function Reservar() {
 
   const queryClient = useQueryClient()
-  
+
   const [ isSubmiting, setIsSubmiting ] = useState(false)
 
   //Get all reservations
@@ -47,7 +47,9 @@ export default function Reservar() {
     });
     queryClient.invalidateQueries("reservas")
     Router.push("/reservas")
-    setIsSubmiting(false)
+    setTimeout(() => {
+      setIsSubmiting(false)
+    }, 2000);
   } 
 
   return (
