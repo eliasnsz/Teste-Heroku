@@ -9,7 +9,9 @@ import PageTitle from "../../components/PageTitle"
 import ReservationCard from "../../components/ReservationCard"
 import { baseUrl } from "../_app"
 
-export default function Reservas({ session }) {
+export default function Reservas({ userSession: session }) {
+
+  console.log(session );
 
   //Get all reservations
   const { data: allReservations, isLoading } = useQuery("reservas", async () => {
@@ -23,7 +25,7 @@ export default function Reservas({ session }) {
   if (isLoading) return <LoadingScreen/>
 
   const thisUserReservations = allReservations
-    .filter(res => res.email === session.user.email)
+    .filter(res => res.email === session?.user?.email)
 
 
   return(
@@ -61,8 +63,8 @@ export const getServerSideProps = async (context) => {
 
   return {
     props: {
-      session
-    }
+      userSession: session
+    } 
   }
 
 }
