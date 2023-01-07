@@ -1,6 +1,5 @@
-import { Box, Button, Center, Container, Divider, Heading, Spinner, Stack, Text } from "@chakra-ui/react";
 import axios from "axios";
-import { getSession, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useQuery, useQueryClient } from "react-query";
 import Header from "../../components/Header";
 import { baseUrl } from "../_app";
@@ -13,12 +12,13 @@ import ObsInput from "../../components/Inputs/ObsInput";
 import SubmitButton from "../../components/Inputs/SubmitButton";
 import PageTitle from "../../components/PageTitle";
 import DefaultContainer from "../../components/DefaultContainer"
-import Router from "next/router";
+import { useRouter } from "next/router";
 
 export default function Reservar() {
 
   const { data: session } = useSession()
   const queryClient = useQueryClient()
+  const router = new useRouter()
 
   //Get all reservations
   const { data: allReservations, isLoading } = useQuery("reservas", async () => {
@@ -29,7 +29,6 @@ export default function Reservar() {
     refetchOnWindowFocus: false
   })
 
-  if (!session) Router.push("/login")
   if (isLoading) return <LoadingScreen/>
 
   const handleSubmit = async (e) => {
@@ -45,10 +44,8 @@ export default function Reservar() {
       name, date, adult, teen, child, local, obs
     });
     queryClient.invalidateQueries("reservas")
-    Router.push("/reservas")
+    router.push("/reservas")
   } 
-
-  const teste = allReservations.filter(item => item.email === session?.user?.email)
 
   return (
     <>

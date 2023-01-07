@@ -2,9 +2,7 @@ import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "./auth/[...nextauth]"
 import { connectToDatabase } from "./database"
 import moment from "moment/moment"
-import { adminEmails, baseUrl } from "../_app"
-import { QueryClient } from "react-query"
-import { redirect } from "next/dist/server/api-utils"
+import { adminEmails } from "../_app"
 
 export default async function Handler(req, res) {
   
