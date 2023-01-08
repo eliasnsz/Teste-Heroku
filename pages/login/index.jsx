@@ -38,6 +38,20 @@ export default function Login() {
             </Box>
             Continuar com o Google
           </Button>
+          <Button
+            display="flex"
+            size="lg"
+            colorScheme="facebook"
+            borderRadius="full"
+            onClick={() => signIn("instagram")}
+            gap={3}
+            m="auto"
+          >
+            <Box bg="#fff" p="4px" borderRadius={4}>
+              <Img src="https://imagensemoldes.com.br/wp-content/uploads/2020/04/imagem-google-logo-com-fundo-transparente-1.png" alt="google-logo" w="20px"/>
+            </Box>
+            Continuar com o Google
+          </Button>
         </Stack>
       </Center>
     </>
