@@ -67,12 +67,14 @@ export default function QuantityInputs ({ local, allReservations, date }) {
           value={teen} 
           onChange={e => setTeen(e)}
           name="teen"  
+          isRequired
           label="8 a 12 anos:" 
         />
         <NumberInput 
           value={child} 
           onChange={e => setChild(e)}
           name="child"  
+          isRequired 
           label="5 a 7 anos:" 
         />
       </Stack>

@@ -2,7 +2,7 @@ import axios, { all } from "axios";
 import { getSession, useSession } from "next-auth/react";
 import { useQuery, useQueryClient } from "react-query";
 import Header from "../../components/Header";
-import { baseUrl } from "../_app";
+import { baseUrl, holidays } from "../_app";
 import LoadingScreen from "../../components/LoadingScreen";
 import NameInput from "../../components/Inputs/NameInput";
 import DateInput from "../../components/Inputs/DateInput";
@@ -15,6 +15,7 @@ import DefaultContainer from "../../components/DefaultContainer"
 import Router from "next/router";
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
+import moment from "moment";
 
 export default function Reservar({ userSession }) {
 
@@ -34,27 +35,62 @@ export default function Reservar({ userSession }) {
     staleTime: 1000 * 60, // 60 segundos
     refetchOnWindowFocus: false
   })
-
+  
   if (isLoading) return <LoadingScreen/>
-
+  
+  //Form Validate
+  
   const isAllValidate = (event, reservation) => {
     const quantity = isQuantityValidate(reservation)
     const date = isDateValidate()
+    const datePossibility = isPossibleDate()
+    const operatingDate = isOperationDate()
     
     if (!date) { 
       sendExistentDateMessage()
       event.target.date.focus()
-      return [ quantity, date ]
+      return [ quantity, date, datePossibility, operatingDate ]
     }
     if (!quantity) {
       sendMaxCapacityMessage(reservation.local)
-      return [ quantity, date ]
+      return [ quantity, date, datePossibility, operatingDate ]
     }
-
-    return [ quantity, date ]
-
+    if (!datePossibility) {
+      sendImpossibleDateMessage()
+      event.target.date.focus()
+      return [ quantity, date, datePossibility, operatingDate ]
+    }
+    if (!operatingDate) {
+      sendNotOperatingDateMessage()
+      event.target.date.focus()
+      return [ quantity, date, datePossibility, operatingDate ]
+    }
+    
+    return [ quantity, date, datePossibility, operatingDate ]
+    
   }
 
+  const isOperationDate = () => {
+    const reservationDate = moment(date).day()
+    const operationDays = [ 5, 6, 0 ] //Sexta, sabado e domingo. 
+
+    if (operationDays.includes(reservationDate) || holidays.includes(date)) {
+      return true
+    }
+    return false
+  }
+
+  const isPossibleDate = () => {
+    const reservationDate = moment(date).format("YYYY-MM-DD")
+    const now = moment().format("YYYY-MM-DD")
+
+    console.log(reservationDate, now);
+    if (reservationDate >= now) {
+      return true
+    } 
+    return false
+  }
+  
   const isDateValidate = () => {
     const thisUserReservationsDates = allReservations
       .filter(item => item.email === userSession.user.email)
@@ -79,6 +115,8 @@ export default function Reservar({ userSession }) {
         return true
     }
   }
+
+  //Submit
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -105,6 +143,8 @@ export default function Reservar({ userSession }) {
     sendSucessMessage()
   } 
 
+  //Messages
+
   const sendSucessMessage = () => {
     toast({
       title: 'Pronto!',
@@ -129,6 +169,16 @@ export default function Reservar({ userSession }) {
     })
   }
 
+  const sendImpossibleDateMessage = () => {
+    toast({
+      title: 'Erro!',
+      description: "Data ultrapassada",
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    })
+  }
+
   const sendExistentDateMessage = () => {
     toast({
       title: 'Erro!',
@@ -138,6 +188,17 @@ export default function Reservar({ userSession }) {
       isClosable: true,
     })
   }
+
+  const sendNotOperatingDateMessage = () => {
+    toast({
+      title: 'Erro!',
+      description: "O Recanto Andreeta funciona somente às sextas, sábados e domingos.",
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    })
+  }
+
   return (
     <>
       <Header/>

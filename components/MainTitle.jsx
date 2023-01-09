@@ -51,9 +51,10 @@ function SimpleButton ({ href, children }) {
     <Link href={href} passHref>
       <Button
         size="lg"
-        color="#222"
-        colorScheme="blackAlpha"
-        variant="outline"
+        fontWeight={500}
+        bg="transparent"
+        _hover={{ bg: "#222", color: "white" }}
+        border="1px solid black"
         borderRadius="none"
       >
         { children }
@@ -66,6 +67,7 @@ function CtaButton({ href, children }) {
   return(
     <Link href={href} passHref>
       <Button
+        fontWeight={500}
         size="lg"
         colorScheme="green"
         variant="solid"

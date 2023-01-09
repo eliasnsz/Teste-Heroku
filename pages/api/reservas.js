@@ -64,7 +64,6 @@ export default async function Handler(req, res) {
     const { uuid, date } = req.body
 
     const reservations = await db.collection(date).findOneAndDelete({ _id: ObjectId(uuid) })
-    console.log(reservations);
     return res.status(200).end()
   }
 
