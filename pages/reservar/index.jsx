@@ -84,7 +84,6 @@ export default function Reservar({ userSession }) {
     const reservationDate = moment(date).format("YYYY-MM-DD")
     const now = moment().format("YYYY-MM-DD")
 
-    console.log(reservationDate, now);
     if (reservationDate >= now) {
       return true
     } 

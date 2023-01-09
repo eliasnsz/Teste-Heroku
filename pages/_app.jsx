@@ -51,11 +51,11 @@ moment.locale('pt-br', {
 
 const queryClient = new QueryClient()
 
-// export const baseUrl = "http://localhost:3000"
-export const baseUrl = "https://teste-heroku-eliasnsz.vercel.app"
+export const baseUrl = "http://localhost:3000"
+// export const baseUrl = "https://teste-heroku-eliasnsz.vercel.app"
 export const externalMaxCapacity = 250
 export const internalMaxCapacity = 200
-export const holidays = [ "2023-05-01" ]
+export const holidays = []
 export const adminEmails = [ 
   "shadowplays1008@gmail.com", 
   "eliasnsouza1245@gmail.com", 

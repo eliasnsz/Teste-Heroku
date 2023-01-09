@@ -5,6 +5,8 @@ import { FaTrashAlt, FaUserEdit } from 'react-icons/fa'
 
 import moment from "moment";
 import DeletingModal from "./DeletingModal";
+import Link from "next/link";
+import Router from "next/router";
 
 export default function ReservationCard({ reservation }) {
 
@@ -72,12 +74,13 @@ export default function ReservationCard({ reservation }) {
             roundedBottom={'sm'}
             cursor={'pointer'}
             color="brown.800"
+            onClick={() => Router.push(`/reservas/${reservation._id}`)}
             _hover={{ color: "brown.400" }}
             w="full">
-            <Text fontSize={'md'} fontWeight={'semibold'}>
-              Editar Reserva
-            </Text>
-            <Icon as={BiEdit}></Icon>
+              <Text fontSize={'md'} fontWeight={'semibold'}>
+                Editar Reserva
+              </Text>
+              <Icon as={BiEdit}></Icon>
           </Flex>
           <Flex
             p={4}

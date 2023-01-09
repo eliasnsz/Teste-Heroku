@@ -59,11 +59,40 @@ export default async function Handler(req, res) {
 
   }
 
+  if (req.method === "PUT") {
+    const { changes, uuid, date } = req.body
+
+    const { name, adult, teen, child, local, obs } = changes
+
+    const formattedChanges = { 
+      name, 
+      quantity: {
+        adult: parseInt(adult), 
+        teen: parseInt(teen) , 
+        child: parseInt(child),
+        total: parseInt(adult) +  parseInt(teen) + parseInt(child)
+      }, 
+      local, 
+      obs 
+    }
+
+    await db.collection(date)
+      .findOneAndUpdate({ _id: ObjectId(uuid) }, { $set: { ...formattedChanges } }) 
+
+    return res.status(200).end()
+  }
+
   if (req.method === "DELETE") {
 
     const { uuid, date } = req.body
 
-    const reservations = await db.collection(date).findOneAndDelete({ _id: ObjectId(uuid) })
+    await db.collection(date).findOneAndDelete({ _id: ObjectId(uuid) })
+
+    const thisDateReservations = await db.collection(date).find().toArray()
+    if (thisDateReservations.length === 0) {
+      db.collection(date).drop()
+    } 
+    
     return res.status(200).end()
   }
 

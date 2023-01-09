@@ -1,4 +1,5 @@
-import { Box, Divider } from "@chakra-ui/react";
+import { Box, Button, Divider, Text } from "@chakra-ui/react";
+import { useSession } from "next-auth/react";
 import GiantLogo from "./GiantLogo";
 import SideMenuContent from "./SideMenuContent";
 import SocialMedia from "./SocialMedia";

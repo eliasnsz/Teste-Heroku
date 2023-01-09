@@ -8,7 +8,7 @@ export default function EmptyPage({ children, action, href }) {
         <Stack align="center">
           <Text textAlign="center">{ children }</Text>
           <Image
-            w={["100px", "100px", "150px"]}
+            w="120px"
             m="auto"
             alt="empty-folder-icon"
             src="https://static.thenounproject.com/png/469473-200.png"

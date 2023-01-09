@@ -1,8 +1,12 @@
-import { Flex, ListItem, UnorderedList } from "@chakra-ui/react";
+import { Button, Center, Divider, Flex, Icon, ListItem, Stack, Tag, Text, UnorderedList } from "@chakra-ui/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import HeaderButton from "./HeaderButton";
+import { RiLoginBoxLine } from 'react-icons/ri'
+import { adminEmails } from "../pages/_app";
 
 export default function SideMenuContent () {
+  
   return (
     <>
       <UnorderedList 
@@ -19,7 +23,7 @@ export default function SideMenuContent () {
       >
         <Flex 
           direction="column" 
-          h="60%" 
+          h="70%" 
           justify="center" 
           gap={10} 
           align="center"
@@ -30,6 +34,10 @@ export default function SideMenuContent () {
           <Item href="/">Sobre nós</Item>
         </Flex>
       </UnorderedList>
+
+      <Divider m="auto"/>
+      <LoginInfoOrButton />
+
     </>
   )
 }
@@ -42,4 +50,44 @@ function Item ({ href, children}) {
       </ListItem>
     </Link>
   )
+}
+
+function LoginInfoOrButton() {
+
+  const { data: session } = useSession()
+  const isAdmin = adminEmails.includes(session?.user?.email)
+
+  if (!session) return (
+    <Link href="/login">
+      <Flex align="center" justify="center" gap={1}>
+        <Button 
+          my={6} 
+          textAlign="center" 
+          variant="solid" 
+          colorScheme="green"
+          borderRadius="none"
+        >
+          <Icon as={RiLoginBoxLine} color="white" mr={1}/>
+          Fazer login
+        </Button>
+      </Flex>
+    </Link>
+  )
+  return (
+    <>
+
+      <Stack align="center" spacing={1} my={4}>
+        <Text fontWeight="600">{session.user.name}</Text>
+        {isAdmin && <Tag colorScheme="red" variant="solid" size="sm" w="fit-content">Administrador</Tag>}
+        <Button 
+          variant="link" 
+          colorScheme="red" 
+          onClick={() => signOut({ redirect: true, callbackUrl: "/" })}
+        >
+          Sair
+        </Button>
+      </Stack>
+    </>
+  )
+  
 }
