@@ -1,9 +1,23 @@
+const { MongoClient } = require("mongodb")
 import { unstable_getServerSession } from "next-auth"
 import { authOptions } from "./auth/[...nextauth]"
-import { connectToDatabase } from "./database"
 import moment from "moment/moment"
 import { adminEmails } from "../_app"
 import { ObjectId } from "mongodb"
+
+const uri = process.env.DATABASE_URL
+
+let cachedDb;
+
+export async function connectToDatabase(dbName) {
+  if (cachedDb) {
+    return cachedDb
+  }
+  const client = await MongoClient.connect(uri)
+  const db = client.db(dbName)
+  cachedDb = db
+  return db
+}
 
 export default async function Handler(req, res) {
   

@@ -66,7 +66,7 @@ export default function Reservas({ userSession: session }) {
 
 export const getServerSideProps = async (context) => {
   const session = await getSession(context)
-
+  
   if(!session) {
     return {
       redirect: {
