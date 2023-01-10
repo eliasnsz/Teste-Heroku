@@ -1,4 +1,4 @@
-import { Heading, useToast } from "@chakra-ui/react";
+import { Button, Center, Flex, Heading, useToast } from "@chakra-ui/react";
 import axios, { all } from "axios";
 import moment from "moment";
 import { getSession } from "next-auth/react";
@@ -170,12 +170,23 @@ export default function EditReservation ({ userSession }) {
             defaultValue={reservation.local}
           />
           <ObsInput defaultValue={reservation.obs} />
-          <SubmitButton 
-            isLoading={isSubmiting}
-            isDisabled={isSubmiting }
-          >
-            Salvar
-          </SubmitButton>
+          <Flex align="center" justify="center" gap={4} mt={8}>
+            <Button 
+              size="lg"
+              onClick={() => Router.push("/reservas")}
+            >
+              Cancelar
+            </Button>
+            <Button 
+              isLoading={isSubmiting}
+              isDisabled={isSubmiting}
+              size="lg"
+              colorScheme="green"
+              type="submit"
+            >
+              Salvar
+            </Button>
+          </Flex>
         </form>
       </DefaultContainer>
     </>
