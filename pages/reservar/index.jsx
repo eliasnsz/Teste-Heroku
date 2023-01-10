@@ -16,6 +16,7 @@ import Router from "next/router";
 import { useState } from "react";
 import { useToast } from "@chakra-ui/react";
 import moment from "moment";
+import TelInput from "../../components/Inputs/TelInput";
 
 export default function Reservar({ userSession }) {
 
@@ -45,29 +46,43 @@ export default function Reservar({ userSession }) {
     const date = isDateValidate()
     const datePossibility = isPossibleDate()
     const operatingDate = isOperationDate()
+    const tel = isTelValidate(reservation)
     
     if (!date) { 
       sendExistentDateMessage()
       event.target.date.focus()
-      return [ quantity, date, datePossibility, operatingDate ]
+      return [ quantity, date, datePossibility, operatingDate, tel ]
+    }
+    if (!tel) {
+      sendInvalidTelMessage()
+      event.target.phone.focus()
+      return [ quantity, date, datePossibility, operatingDate, tel ]
     }
     if (!quantity) {
       sendMaxCapacityMessage(reservation.local)
-      return [ quantity, date, datePossibility, operatingDate ]
+      return [ quantity, date, datePossibility, operatingDate, tel ]
     }
     if (!datePossibility) {
       sendImpossibleDateMessage()
       event.target.date.focus()
-      return [ quantity, date, datePossibility, operatingDate ]
+      return [ quantity, date, datePossibility, operatingDate, tel ]
     }
     if (!operatingDate) {
       sendNotOperatingDateMessage()
       event.target.date.focus()
-      return [ quantity, date, datePossibility, operatingDate ]
+      return [ quantity, date, datePossibility, operatingDate, tel ]
     }
     
     return [ quantity, date, datePossibility, operatingDate ]
     
+  }
+
+  const isTelValidate = (reservation) => {
+    const phone = reservation.phone
+    if (phone.includes("-") && phone.length === 15) {
+      return true
+    }
+      return false
   }
 
   const isOperationDate = () => {
@@ -121,7 +136,7 @@ export default function Reservar({ userSession }) {
     event.preventDefault()
     setIsSubmiting(true)
     
-    const fields = [ "name", "date", "adult", "teen", "child", "local", "obs" ]
+    const fields = [ "name", "date", "phone", "adult", "teen", "child", "local", "obs" ]
     const reservation = {}
     
     for (let i = 0; i < fields.length; i++) {
@@ -198,6 +213,16 @@ export default function Reservar({ userSession }) {
     })
   }
 
+  const sendInvalidTelMessage = () => {
+    toast({
+      title: 'Erro!',
+      description: "Número de telefone inválido",
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    })
+  }
+
   return (
     <>
       <Header/>
@@ -209,6 +234,7 @@ export default function Reservar({ userSession }) {
               value={date}
               onChange={e => setDate(e.target.value)}
             />
+            <TelInput/>
             <QuantityInputs 
               local={local} 
               allReservations={allReservations}

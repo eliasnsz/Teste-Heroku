@@ -121,7 +121,7 @@ export default function EditReservation ({ userSession }) {
 
     Router.push("/reservas")
 
-    await axios.put("/api/reservas", { changes, uuid: reservation._id, date: reservation.date });
+    await axios.put("/api/reservas", { changes, uuid: reservation._id, date: reservation.date, editLocal: "site" });
 
     queryClient.invalidateQueries("reservas")
 

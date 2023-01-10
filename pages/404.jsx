@@ -9,6 +9,7 @@ export default function Error404() {
         <GiantLogo />
         <Image 
           src="https://cdn.iconscout.com/icon/premium/png-256-thumb/folder-not-found-2-497481.png"
+          alt="error-404-image"
           w="80px"
         ></Image>
         <Heading fontSize="lg">Página não encontrada</Heading>

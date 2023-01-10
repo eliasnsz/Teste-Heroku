@@ -42,11 +42,12 @@ export default async function Handler(req, res) {
 
     const isCreatedByAdmin = adminEmails.includes(session?.user?.email) 
 
-    const { name, date, adult, teen, child, local, obs } = req.body
+    const { name, phone, date, adult, teen, child, local, obs } = req.body
 
     const reservation = { 
       name, 
       date, 
+      phone,
       email: session.user.email, 
       quantity: {
         adult: parseInt(adult), 
@@ -57,12 +58,13 @@ export default async function Handler(req, res) {
       local, 
       obs,
       mesa: "",
+      lastModified: moment()._d,
       creationInfo: {
         createdByAdmin: isCreatedByAdmin,
         creator: {
           image: session.user.image,
           name: session.user.name,
-          createdAt: moment()._d,
+          createdAt: moment()._d
         }
       }
     }
@@ -74,24 +76,43 @@ export default async function Handler(req, res) {
   }
 
   if (req.method === "PUT") {
-    const { changes, uuid, date } = req.body
+    const { changes, uuid, date, editLocal } = req.body
 
-    const { name, adult, teen, child, local, obs } = changes
-
-    const formattedChanges = { 
-      name, 
-      quantity: {
-        adult: parseInt(adult), 
-        teen: parseInt(teen) , 
-        child: parseInt(child),
-        total: parseInt(adult) +  parseInt(teen) + parseInt(child)
-      }, 
-      local, 
-      obs 
+    
+    const { mesa, name, adult, teen, child, local, obs } = changes
+    
+    const formattedChanges = () => {
+      if (editLocal === "site") {
+        return { 
+          name, 
+          quantity: {
+            adult: parseInt(adult), 
+            teen: parseInt(teen) , 
+            child: parseInt(child),
+            total: parseInt(adult) +  parseInt(teen) + parseInt(child)
+          }, 
+          local, 
+          obs,
+          lastModified: moment()._d
+        }
+      } else {
+        return { 
+          mesa,
+          quantity: {
+            adult: parseInt(adult), 
+            teen: parseInt(teen) , 
+            child: parseInt(child),
+            total: parseInt(adult) +  parseInt(teen) + parseInt(child)
+          }, 
+          local, 
+          obs,
+          lastModified: null
+        }
+      }
     }
 
     await db.collection(date)
-      .findOneAndUpdate({ _id: ObjectId(uuid) }, { $set: { ...formattedChanges } }) 
+      .findOneAndUpdate({ _id: ObjectId(uuid) }, { $set: { ...formattedChanges() } }) 
 
     return res.status(200).end()
   }

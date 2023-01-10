@@ -6,6 +6,7 @@ import axios from "axios"
 import { baseUrl } from "../_app"
 import { useQuery } from "react-query"
 import Reservations from "../../components/AdminPage/Reservations"
+import CreateReservation from "../../components/AdminPage/CreateReservation"
 
 export default function Admin() {
 
@@ -26,7 +27,7 @@ export default function Admin() {
       <DefaultContainer maxW="3xl">
         <AdminTabs 
           tabOne={<Reservations allReservations={allReservations} />}
-          tabTwo={"cu2"} 
+          tabTwo={<CreateReservation />} 
           tabThree={"cu3"}
         />
       </DefaultContainer>

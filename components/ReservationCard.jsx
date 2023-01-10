@@ -35,7 +35,7 @@ export default function ReservationCard({ reservation }) {
             objectFit="cover"
             h="full"
             w="full"
-            alt={'Blog Image'}
+            alt='local-image'
           />
         </Box>
         <Box p={4}>

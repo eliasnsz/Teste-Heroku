@@ -6,6 +6,7 @@ import DateSearch from "./DateSearch";
 import { TfiReload } from "react-icons/tfi";
 import SearchInput from "./SearchInput";
 import ResCard from "./ResCard";
+import Stats from "./Stats";
 
 export default function Reservations({ allReservations }) {
 
@@ -18,7 +19,7 @@ export default function Reservations({ allReservations }) {
     queryClient.refetchQueries("reservas")
   }
 
-  const reservations = allReservations.filter(res => res.date === date)
+  const reservations = allReservations.filter(res => res.date === date).reverse()
 
   const searchFilteredReservations = search.length && 
     reservations.filter(res => res.name.toLowerCase().includes(search.toLowerCase()))
@@ -34,22 +35,23 @@ export default function Reservations({ allReservations }) {
         <SearchInput value={search} onChange={e => setSearch(e.target.value)} />
 
         <Box border="1px solid" borderColor="brown.300" p={4} h="56vh" overflowY="scroll">
-          <SimpleGrid columns={[ 1, 2, 2, 3 ]} placeItems="center" gap={4}>
+          <SimpleGrid columns={[ 1, 2, 2, 3 ]}   placeItems="center" gap={4}>
             {!search.length ? 
               reservations.map((res, index) => {
 
-                return <ResCard key={index} reservation={res}/>
+                return <ResCard key={index} reservation={res} allReservations={allReservations} />
 
               })
               :
               searchFilteredReservations.map((res, index) => {
 
-                return <ResCard key={index} reservation={res}/>
+                return <ResCard key={index} reservation={res} allReservations={allReservations} />
 
               })
             }
           </SimpleGrid>
         </Box>
+          <Stats reservations={reservations}/>
       </Flex>
     </>
   )
